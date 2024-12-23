@@ -8,6 +8,7 @@ import random
 from .request_model import CreateUser as user_request
 from .request_model import UpdateUser
 from  db.tables import Users as user_db
+import datetime
 
 random.seed(12)
 
@@ -36,13 +37,23 @@ def searchfood(food_name:str="dosa",db:Session = Depends(get_session)):
      
 @user_router.get("/order")
 def order_food(items:order,db:Session = Depends(get_session)):
+    #work on later
     
     food_ids = [order_item.food_id for order_item in items.order_items]
+    
     rest_list = db.exec(select(Restaurant,Food_Item).distinct()
                         .join(Restaurant_Menu,Restaurant.rest_id==Restaurant_Menu.rest_id)
                         .join(Food_Item,Food_Item.food_id == Restaurant_Menu.food_id)
-                        .where(Restaurant_Menu.food_id.in_(food_ids))).all()  
-    order_id = random.randint(0,10**3)
+                        .where(Restaurant_Menu.food_id.in_(food_ids))).all()
+    restaurants, food_items = [] , []
+    
+    print(food_ids)
+    order_summary = {"order_id":datetime.datetime.now(datetime.timezone.utc).strftime("%Y%m%d%h%m%"),
+                     "order_date":datetime.datetime.now(datetime.timezone.tzname("ist")).date().ctime()
+                   }
+
+    return None
+    
            
 @user_router.get("/create")
 def create_user(user_info:user_request, db:Session = Depends(get_session)):
