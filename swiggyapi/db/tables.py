@@ -14,12 +14,13 @@ class Restaurant(SQLModel,table =True):
     rest_location:str = Field(nullable=False,max_length=500)
     rest_type:str = Field(max_length=10)
     rest_menu:list["Restaurant_Menu"] = Relationship(back_populates="rests")
+    rest_order:list["Orders"]|None = Relationship(back_populates="order_rest")   #note here
 
 class Food_Item(SQLModel,table=True):
-    food_id :int = Field(nullable=False,primary_key=True)
+    food_id :int|None = Field(nullable=False,primary_key=True,default=None)
     food_name:str = Field(nullable=False)
     menu_items:list["Restaurant_Menu"] = Relationship(back_populates="food")
-    food_order:list["Orders"]|None = Relationship(back_populates="order_rest") #note here
+    food_order:list["Orders"]|None = Relationship(back_populates="order_food") #note here
 
 
 
@@ -29,7 +30,7 @@ class Restaurant_Menu(SQLModel,table=True):
        price:float = Field(nullable=False)
        food:Food_Item|None = Relationship(back_populates="menu_items")
        rests:Restaurant|None = Relationship(back_populates="rest_menu")
-       rest_order:list["Orders"]|None = Relationship(back_populates="order_rest") #note here
+      
        
 
 class Orders(SQLModel,table=True):
