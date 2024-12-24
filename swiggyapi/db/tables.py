@@ -41,8 +41,8 @@ class Orders(SQLModel,table=True):
      #relationship multiple relations
      # many users can have many orders #note here
      order_users:list[Users]|None = Relationship(back_populates="users_order") #note here
-     order_rest:list[Food_Item]|None = Relationship(back_populates="rest_order")#note here
-     order_food:list[Restaurant]|None = Relationship(back_populates="food_order")#note here
+     order_rest:list[Restaurant]|None = Relationship(back_populates="rest_order")#note here
+     order_food:list[Food_Item]|None = Relationship(back_populates="food_order")#note here
 
 
 
